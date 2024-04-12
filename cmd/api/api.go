@@ -25,7 +25,8 @@ func (s *APIServer) Run() error {
 	router := mux.NewRouter()
 	subRouter := router.PathPrefix("/api/v1").Subrouter()
 
-	userService := user.NewHandler()
+	userStore := user.NewStore(s.db)
+	userService := user.NewHandler(userStore)
 	userService.RegisterRoutes(subRouter)
 
 	log.Println("Start server at port", s.addr)
